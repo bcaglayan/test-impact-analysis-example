@@ -2,8 +2,16 @@ const jest = require("jest")
 const tia = require("./tia")
 
 async function main() {
+
   const requiredTestFiles = []
   const allChangedFiles = JSON.parse(process.argv[2])
+
+  const thundraJestArgs = process.env['THUNDRA_JEST_ARGUMENTS'];
+  if (thundraJestArgs) {
+    const thundraArgs = thundraJestArgs.split(' ');
+    requiredTestFiles.push(...thundraArgs)
+  }
+
   const changedSourceFiles = allChangedFiles
     .filter((file) => /src\/.*.js/gi.test(file))
     .map((file) => "./" + file)
